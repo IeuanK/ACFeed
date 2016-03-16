@@ -16,7 +16,16 @@ public class ACWBot extends PircBot {
 			/* Start up */
 			this.connect(cr.loadProperty("server"), Integer.parseInt(cr.loadProperty("port")));
 			this.changeNick(cr.loadProperty("nickname"));
-			this.joinChannel(cr.loadProperty("channel"));
+			String channels = cr.loadProperty("channels");
+			if(channels.contains("|")) {
+				for(String channel : channels.split("\\|")) {
+					this.joinChannel(channel);
+					System.out.println("Attempting to join "+ channel);
+				}
+			} else {
+				this.joinChannel(channels);
+				System.out.println("Attempting to join "+ channels);
+			}
 		    
 		    (new Thread(new FeedReader(this))).start();
 		} else {
@@ -25,7 +34,11 @@ public class ACWBot extends PircBot {
 	}
 	
 	public void publishFeed(String message) {
-		this.sendMessage(cr.loadProperty("channel"), message);
+		this.sendMessage(cr.loadProperty("mainchannel"), message);
+	}
+	
+	public void publishFeed(String message, String channel) {
+		this.sendMessage(channel, message);
 	}
     
     public String trimMessage(String message) {

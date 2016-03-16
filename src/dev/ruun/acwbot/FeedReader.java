@@ -74,6 +74,7 @@ public class FeedReader implements Runnable {
 		                                Colors.DARK_GRAY + item.getString("title") + 
 		                                Colors.LIGHT_GRAY + "] " +
 		                                Colors.BLUE + guidURL);
+	        							this.bot.publishFeed(publishString, "#ACWiki-Files");
 		                        break;
 		                    case "FILE_DELETED":
 		                        publishString = (
@@ -83,6 +84,7 @@ public class FeedReader implements Runnable {
 		                                Colors.DARK_GRAY + item.getString("title") + 
 		                                Colors.LIGHT_GRAY + "] " +
 		                                Colors.TEAL + sDesc);
+	        							this.bot.publishFeed(publishString, "#ACWiki-Files");
 		                        break;
 		                    case "USER_CREATED":
 		                        publishString = (
@@ -151,7 +153,19 @@ public class FeedReader implements Runnable {
 		                                Colors.LIGHT_GRAY + "] " +
 		                                Colors.TEAL + sDesc);
 		                        break;
+		                    case "BLOCKED":
+		                        publishString = (
+		                                item.getString("author") +
+		                                Colors.DARK_GREEN + " blocked user" +
+		                                Colors.TEAL + sDesc);
+		                        break;
 		                    case "FALLBACKTYPE":
+		                        publishString = (
+		                                item.getString("author") +
+		                                Colors.DARK_GREEN + " did something wrong. " +
+		                                Colors.TEAL + "Please notify SIMA");
+		                        break;
+		                    default:
 		                        publishString = (
 		                                item.getString("author") +
 		                                Colors.DARK_GREEN + " did something wrong. " +
@@ -162,6 +176,7 @@ public class FeedReader implements Runnable {
 	        			if(publishString != null) {
 	        				System.out.println(publishString);
 	        				this.bot.publishFeed(publishString);
+	        				
 	        		        if(this.lastTime != tempLastTime)
 	        		        	System.out.println(this.lastTime + " -> " + tempLastTime);
 	        		        this.lastTime = tempLastTime;
